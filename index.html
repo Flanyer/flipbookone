@@ -1,0 +1,242 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flipbook con Relieve y Imagen en la Parte Posterior</title>
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background-color: #f0f0f0;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    max-width: 100vw;
+    max-height: 100vh;
+    overflow: hidden;
+}
+
+.book {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 75vw; /* Escala el libro según el ancho de la ventana */
+    height: calc(75vw * 1.464); /* Escala proporcionalmente (1206px / 823px = 1.464) */
+    max-width: 823px;
+    max-height: 1206px;
+    transform: translate(-50%, -50%);
+    transition: transform 1s ease; /* Transición para el movimiento de traslación */
+    perspective: 3000px;
+}
+
+/* Ajustes para asegurar que el flipbook se vea completo en pantallas altas */
+@media (min-aspect-ratio: 823/1206) {
+    .book {
+        width: calc(100vh / 1.464); /* Escala el libro según la altura de la ventana */
+        height: 100vh;
+    }
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 768px) {
+    .container {
+        max-width: 90vw;  /* Limita el tamaño del contenedor en pantallas pequeñas */
+    }
+}
+
+.page {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: left;
+    transform-style: preserve-3d;
+    transition: transform 1s ease, box-shadow 0.3s ease;
+    background-color: white;
+    background-size: contain; /* Asegura que la imagen se ajuste dentro de la página */
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 10px;
+    cursor: pointer;
+    z-index: auto;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), 0 0 10px rgba(0, 0, 0, 0.1) inset;
+}
+
+.page .back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    transform: rotateY(180deg);
+    backface-visibility: hidden;
+    pointer-events: none;
+    border-radius: 10px;
+}
+
+.page.cover-page .back,
+.page.closing-page .back {
+    opacity: 1; /* Sin opacidad para la portada y la tapa de cierre */
+}
+
+.page:not(.cover-page):not(.closing-page) .back {
+    opacity: 0.95; /* Opacidad del 95% para las demás páginas */
+}
+
+/* Z-index para las páginas, con la última arriba */
+.page:nth-child(1) { z-index: 12; }
+.page:nth-child(2) { z-index: 11; }
+.page:nth-child(3) { z-index: 10; }
+.page:nth-child(4) { z-index: 9; }
+.page:nth-child(5) { z-index: 8; }
+.page:nth-child(6) { z-index: 7; }
+.page:nth-child(7) { z-index: 6; }
+.page:nth-child(8) { z-index: 5; }
+
+/* Bloqueo temporal para evitar interacción durante la animación */
+.disabled {
+    pointer-events: none;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="book" id="book">
+        <!-- Portada -->
+        <div class="page cover-page" onclick="togglePage(this, event)" style="background-image: url('https://onewayvida.cl/assets/images/gallery01/0e0dcb5e.jpg?v=6be8a419');">
+            <div class="back" style="background-image: url('https://onewayvida.cl/assets/images/gallery01/357e772c.jpg?v=6be8a419');"></div>
+        </div>
+
+        <!-- Página 1 -->
+        <div class="page" onclick="togglePage(this, event)" style="background-image: url('https://onewayvida.cl/assets/images/gallery01/39efc44f.jpg?v=a1372c6a');">
+            <div class="back" style="background-image: url('https://onewayvida.cl/assets/images/gallery01/357e772c.jpg?v=6be8a419');"></div>
+        </div>
+        <!-- Página 2 -->
+        <div class="page" onclick="togglePage(this, event)" style="background-image: url('https://onewayvida.cl/assets/images/gallery01/57e7c058.jpg?v=a1372c6a');">
+            <div class="back" style="background-image: url('https://onewayvida.cl/assets/images/gallery01/357e772c.jpg?v=6be8a419');"></div>
+        </div>
+        <!-- Página 3 -->
+        <div class="page" onclick="togglePage(this, event)" style="background-image: url('https://onewayvida.cl/assets/images/gallery01/b0334f28.jpg?v=a1372c6a');">
+            <div class="back" style="background-image: url('https://onewayvida.cl/assets/images/gallery01/357e772c.jpg?v=6be8a419');"></div>
+        </div>
+        <!-- Página 4 -->
+        <div class="page" onclick="togglePage(this, event)" style="background-image: url('https://onewayvida.cl/assets/images/gallery01/e1fc79f2.jpg?v=a1372c6a');">
+            <div class="back" style="background-image: url('https://onewayvida.cl/assets/images/gallery01/357e772c.jpg?v=6be8a419');"></div>
+        </div>
+        <!-- Página 5 -->
+        <div class="page" onclick="togglePage(this, event)" style="background-image: url('https://onewayvida.cl/assets/images/gallery01/5499867b.jpg?v=a1372c6a');">
+            <div class="back" style="background-image: url('https://onewayvida.cl/assets/images/gallery01/357e772c.jpg?v=6be8a419');"></div>
+        </div>
+        <!-- Página 6 -->
+        <div class="page" onclick="togglePage(this, event)" style="background-image: url('https://onewayvida.cl/assets/images/gallery01/b48e4914.jpg?v=a1372c6a');">
+            <div class="back" style="background-image: url('https://onewayvida.cl/assets/images/gallery01/357e772c.jpg?v=6be8a419');"></div>
+        </div>
+        <!-- Página 7 -->
+        <div class="page" onclick="togglePage(this, event)" style="background-image: url('https://onewayvida.cl/assets/images/gallery01/4d7b54fd.jpg?v=a1372c6a');">
+            <div class="back" style="background-image: url('https://onewayvida.cl/assets/images/gallery01/357e772c.jpg?v=6be8a419');"></div>
+        </div>
+        <!-- Página 8 -->
+        <div class="page closing-page" onclick="togglePage(this, event)" style="background-image: url('https://onewayvida.cl/assets/images/gallery01/62b0e24d.jpg?v=a1372c6a');">
+            <div class="back" style="background-image: url('https://onewayvida.cl/assets/images/gallery01/22eb7555.jpg?v=6be8a419');"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+let initialPosition = { x: 0, y: 0 };
+let closedPositionX = 0;  // Inicializamos a 0, calcularemos en base al tamaño del libro
+
+window.addEventListener('resize', () => {
+    calculateInitialPosition();
+    calculateClosedPositionX();
+});
+
+window.addEventListener('DOMContentLoaded', (event) => {
+    calculateInitialPosition();
+    calculateClosedPositionX();
+});
+
+function calculateInitialPosition() {
+    const book = document.getElementById('book');
+    const bookRect = book.getBoundingClientRect();
+    const offsetX = window.innerWidth / 2 - bookRect.width / 2;
+    initialPosition = { x: offsetX };
+}
+
+function calculateClosedPositionX() {
+    const book = document.getElementById('book');
+    const bookWidth = book.getBoundingClientRect().width;
+
+    if (window.innerWidth <= 768) {  // Si la pantalla es pequeña
+        closedPositionX = bookWidth * 0.5;
+    } else {
+        closedPositionX = bookWidth * 0.98;
+    }
+}
+
+function togglePage(page, event) {
+    const book = document.getElementById('book');
+
+    // Desactiva la interacción mientras se anima
+    document.querySelectorAll('.page').forEach(p => p.classList.add('disabled'));
+
+    // Determina si avanzar o retroceder
+    if (page.style.transform === "rotateY(-180deg)") {
+        previousPage(page);
+    } else {
+        nextPage(page);
+    }
+}
+
+function nextPage(page) {
+    const book = document.getElementById('book');
+    page.style.zIndex = 1000;
+    page.style.transform = "rotateY(-180deg)";
+    setTimeout(function() {
+        page.style.zIndex = -1;
+        enableInteraction();
+        if (page.classList.contains('closing-page')) {
+            book.style.transform = `translate(calc(-50% + ${closedPositionX}px), -50%)`;
+        }
+    }, 600); // Deshabilitar por 600ms
+}
+
+function previousPage(page) {
+    const book = document.getElementById('book');
+    page.style.zIndex = 1000;
+    page.style.transform = "rotateY(0deg)";
+    setTimeout(function() {
+        const pages = Array.from(document.querySelectorAll('.page'));
+        const originalZIndex = pages.length - pages.indexOf(page);
+        page.style.zIndex = originalZIndex;
+
+        if (page.classList.contains('closing-page')) {
+            book.style.transform = "translate(-50%, -50%)";
+        }
+        
+        enableInteraction();
+    }, 600); // Deshabilitar por 600ms
+}
+
+function enableInteraction() {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('disabled'));
+}
+</script>
+
+</body>
+</html>
